@@ -6,6 +6,23 @@
 
 # React + TypeScript + Vite
 
+
+Website
+
+- Fetch todays date and return zodiac, chinese zodiac and readings.
+- Holidays/red days, celebrations, special days - for multiple countries
+    - Sweden
+    - Japan
+    - Netherlands
+    - Germany
+    - US
+- Click one date - see stats/overview on all countries/for which country it could be a special date.
+- Name days in different countries
+- Week number - depending on country/starting week on monday/sunday
+- Selling idea: Downloadable pdf calendars (templates)
+    - Customizable calendars  (eg photo calendar template)
+
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
