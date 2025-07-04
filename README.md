@@ -23,6 +23,13 @@ Website
     - Customizable calendars  (eg photo calendar template)
 
 
+Resources
+https://nerdcave.com/tailwind-cheat-sheet
+
+
+
+
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
