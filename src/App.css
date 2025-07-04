@@ -40,3 +40,8 @@
 .read-the-docs {
   color: #888;
 }
+
+.picker {
+  width: 80px;
+  text-align: center;
+}
