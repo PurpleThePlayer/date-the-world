@@ -1,32 +1,36 @@
 import { useState } from "react";
 
-const zodiacAnimals = [
+const ZODIAC_ANIMALS = [
   "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake",
   "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"
 ];
 
-// --- High-Precision Astronomy Functions ---
+const BASE_NEW_MOON_JD = 2451550.09766;
+const SYNODIC_MONTH = 29.530588861;
 
-function julianDate(year, month, day) {
+// --- Astronomy & Lunar Calendar Functions ---
+
+function calculateJulianDate(year, month, day) {
   if (month <= 2) {
-    year -= 1;
+    year--;
     month += 12;
   }
   const A = Math.floor(year / 100);
   const B = 2 - A + Math.floor(A / 4);
+
   return Math.floor(365.25 * (year + 4716)) +
          Math.floor(30.6001 * (month + 1)) +
          day + B - 1524.5;
 }
 
-function trueNewMoon(k) {
+function calculateTrueNewMoon(k) {
   const T = k / 1236.85;
   const T2 = T * T;
   const T3 = T2 * T;
   const rad = Math.PI / 180;
 
-  let JDE = 2451550.09766 +
-            29.530588861 * k +
+  let jde = BASE_NEW_MOON_JD +
+            SYNODIC_MONTH * k +
             0.00015437 * T2 -
             0.000000150 * T3 +
             0.00000000073 * T * T2;
@@ -35,17 +39,17 @@ function trueNewMoon(k) {
   const MPrime = (201.5643 + 385.81693528 * k + 0.0107582 * T2) % 360;
   const F = (160.7108 + 390.67050274 * k - 0.0016118 * T2) % 360;
 
-  JDE += -0.40720 * Math.sin(rad * MPrime) +
-         0.17241 * Math.sin(rad * M) +
-         0.01608 * Math.sin(rad * 2 * MPrime) +
-         0.01039 * Math.sin(rad * 2 * F) +
-         0.00739 * Math.sin(rad * (MPrime - M)) -
-         0.00514 * Math.sin(rad * (MPrime + M));
+  jde += -0.40720 * Math.sin(rad * MPrime) +
+          0.17241 * Math.sin(rad * M) +
+          0.01608 * Math.sin(rad * 2 * MPrime) +
+          0.01039 * Math.sin(rad * 2 * F) +
+          0.00739 * Math.sin(rad * (MPrime - M)) -
+          0.00514 * Math.sin(rad * (MPrime + M));
 
-  return JDE;
+  return jde;
 }
 
-function julianToUTCDate(JD) {
+function julianDateToUTC(JD) {
   JD += 0.5;
   const Z = Math.floor(JD);
   const F = JD - Z;
@@ -66,8 +70,8 @@ function julianToUTCDate(JD) {
   const year = (month > 2) ? C - 4716 : C - 4715;
 
   const dayInt = Math.floor(day);
-  const dayFrac = day - dayInt;
-  const totalSeconds = Math.round(dayFrac * 86400);
+  const fractionalDay = day - dayInt;
+  const totalSeconds = Math.round(fractionalDay * 86400);
 
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -76,59 +80,61 @@ function julianToUTCDate(JD) {
   return new Date(Date.UTC(year, month - 1, dayInt, hours, minutes, seconds));
 }
 
-function chineseNewYear(year) {
-  const solsticeJD = julianDate(year - 1, 12, 21);  // Approximate solstice
-  const kStart = Math.floor((solsticeJD - 2451550.09766) / 29.530588861);
+function getChineseNewYearDate(year) {
+  const solsticeJD = calculateJulianDate(year - 1, 12, 21);
+  const kStart = Math.floor((solsticeJD - BASE_NEW_MOON_JD) / SYNODIC_MONTH);
 
-  const newMoons = [];
+  const newMoonDates = [];
   for (let k = kStart; k < kStart + 5; k++) {
-    const jd = trueNewMoon(k);
+    const jd = calculateTrueNewMoon(k);
     if (jd > solsticeJD) {
-      newMoons.push(jd);
+      newMoonDates.push(jd);
     }
   }
 
-  if (newMoons.length < 2) {
-    throw new Error("Unable to compute Chinese New Year for year " + year);
+  if (newMoonDates.length < 2) {
+    throw new Error(`Failed to compute Chinese New Year for year ${year}`);
   }
 
-  return julianToUTCDate(newMoons[1]);
+  return julianDateToUTC(newMoonDates[1]);
 }
 
-function getChineseZodiac(date) {
+function determineChineseZodiac(date) {
   const birthUTC = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
-  const birthYear = date.getFullYear();
+  const year = date.getFullYear();
 
-  const cnyDate = chineseNewYear(birthYear);
+  const cnyDate = getChineseNewYearDate(year);
   const cnyUTC = Date.UTC(cnyDate.getUTCFullYear(), cnyDate.getUTCMonth(), cnyDate.getUTCDate());
 
-  const zodiacYear = (birthUTC < cnyUTC) ? birthYear - 1 : birthYear;
-  const zodiacIndex = (zodiacYear - 4) % 12;
+  const zodiacYear = (birthUTC < cnyUTC) ? year - 1 : year;
+  const zodiacIndex = ((zodiacYear - 4) % 12 + 12) % 12;
 
-  return zodiacAnimals[(zodiacIndex + 12) % 12];
+  return ZODIAC_ANIMALS[zodiacIndex];
 }
 
-// --- Robust React Component ---
+// --- React Component ---
 
-export default function ChineseZodiacCalculator() {
-  const [inputDate, setInputDate] = useState("");
-  const [zodiac, setZodiac] = useState("");
+export default function ChineseZodiacFinder() {
+  const [selectedDate, setSelectedDate] = useState("");
+  const [zodiacSign, setZodiacSign] = useState("");
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setInputDate(value);
+  const handleDateChange = (e) => {
+    const input = e.target.value;
+    setSelectedDate(input);
 
-    const date = new Date(value + "T00:00:00Z");  // Ensure UTC
-
-    if (!isNaN(date)) {
-      try {
-        const zodiacSign = getChineseZodiac(date);
-        setZodiac(zodiacSign);
-      } catch {
-        setZodiac("");
+    if (input) {
+      const date = new Date(`${input}T00:00:00Z`);
+      if (!isNaN(date)) {
+        try {
+          setZodiacSign(determineChineseZodiac(date));
+        } catch {
+          setZodiacSign("");
+        }
+      } else {
+        setZodiacSign("");
       }
     } else {
-      setZodiac("");
+      setZodiacSign("");
     }
   };
 
@@ -137,13 +143,13 @@ export default function ChineseZodiacCalculator() {
       <h2 className="text-xl font-bold mb-4">Chinese Zodiac Finder</h2>
       <input
         type="date"
-        value={inputDate}
-        onChange={handleChange}
+        value={selectedDate}
+        onChange={handleDateChange}
         className="border p-2 rounded w-full mb-4"
       />
-      {zodiac && (
+      {zodiacSign && (
         <div className="text-lg">
-          Your Chinese Zodiac is: <strong>{zodiac}</strong>
+          Your Chinese Zodiac is: <strong>{zodiacSign}</strong>
         </div>
       )}
     </div>
