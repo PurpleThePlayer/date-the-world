@@ -99,7 +99,7 @@ function getChineseNewYearDate(year) {
   return julianDateToUTC(newMoonDates[1]);
 }
 
-function determineChineseZodiac(date) {
+export function determineChineseZodiac(date) {
   const birthUTC = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
   const year = date.getFullYear();
 
@@ -114,44 +114,44 @@ function determineChineseZodiac(date) {
 
 // --- React Component ---
 
-export default function ChineseZodiacFinder() {
-  const [selectedDate, setSelectedDate] = useState("");
-  const [zodiacSign, setZodiacSign] = useState("");
+// export default function ChineseZodiacFinder() {
+//   const [selectedDate, setSelectedDate] = useState("");
+//   const [zodiacSign, setZodiacSign] = useState("");
 
-  const handleDateChange = (e) => {
-    const input = e.target.value;
-    setSelectedDate(input);
+//   const handleDateChange = (e) => {
+//     const input = e.target.value;
+//     setSelectedDate(input);
 
-    if (input) {
-      const date = new Date(`${input}T00:00:00Z`);
-      if (!isNaN(date)) {
-        try {
-          setZodiacSign(determineChineseZodiac(date));
-        } catch {
-          setZodiacSign("");
-        }
-      } else {
-        setZodiacSign("");
-      }
-    } else {
-      setZodiacSign("");
-    }
-  };
+//     if (input) {
+//       const date = new Date(`${input}T00:00:00Z`);
+//       if (!isNaN(date)) {
+//         try {
+//           setZodiacSign(determineChineseZodiac(date));
+//         } catch {
+//           setZodiacSign("");
+//         }
+//       } else {
+//         setZodiacSign("");
+//       }
+//     } else {
+//       setZodiacSign("");
+//     }
+//   };
 
-  return (
-    <div className="p-4 max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Chinese Zodiac Finder</h2>
-      <input
-        type="date"
-        value={selectedDate}
-        onChange={handleDateChange}
-        className="border p-2 rounded w-full mb-4"
-      />
-      {zodiacSign && (
-        <div className="text-lg">
-          Your Chinese Zodiac is: <strong>{zodiacSign}</strong>
-        </div>
-      )}
-    </div>
-  );
-}
+//   return (
+//     <div className="p-4 max-w-md mx-auto">
+//       <h2 className="text-xl font-bold mb-4">Chinese Zodiac Finder</h2>
+//       <input
+//         type="date"
+//         value={selectedDate}
+//         onChange={handleDateChange}
+//         className="border p-2 rounded w-full mb-4"
+//       />
+//       {zodiacSign && (
+//         <div className="text-lg">
+//           Your Chinese Zodiac is: <strong>{zodiacSign}</strong>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
