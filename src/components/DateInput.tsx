@@ -39,8 +39,12 @@
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+interface DateInputProps {
+  date: Date;
+  onDateChange: (date: Date | null) => void;
+}
 
-export default function DateInput({ date, onDateChange }) {
+export default function DateInput({ date, onDateChange }: DateInputProps) {
   return (
     <div className="p-4 max-w-md mx-auto">
       <DatePicker
