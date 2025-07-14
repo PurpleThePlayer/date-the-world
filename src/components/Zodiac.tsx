@@ -24,12 +24,13 @@ export default function Zodiac({date}) {
     const zodiacSign = zodiac(date)
 
     return (
-        <div className="p-4 max-w-md mx-auto">
-            {zodiacSign && (
-                <div className="text-lg">
-                    <strong>Zodiac: {zodiacSign}</strong>
-                </div>
-            )}
-        </div>
+        <>{zodiacSign}</>
+        // <div >
+        //     {zodiacSign && (
+        //         <div>
+        //             <strong>Zodiac: {zodiacSign}</strong>
+        //         </div>
+        //     )}
+        // </div>
     );
 }
