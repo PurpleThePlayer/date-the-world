@@ -23,6 +23,17 @@ Website
     - Customizable calendars  (eg photo calendar template)
 
 
+
+Dropdowns
+- Zodiacs
+- Namedays
+- Holidays
+- Observations
+
+
+- Historical events on date
+- Birthday tracker for users
+
 Resources
 https://nerdcave.com/tailwind-cheat-sheet
 
