@@ -1,3 +1,8 @@
+type Props = {
+    date:Date;
+}
+
+
 const formatMMDD = (date: Date) => {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -20,17 +25,10 @@ const zodiac = (date: Date) => {
     return "Capricorn"
 }
 
-export const Zodiac = ({date}) => {
+export const Zodiac = ({date}:Props) => {
     const zodiacSign = zodiac(date)
 
     return (
         <>{zodiacSign}</>
-        // <div >
-        //     {zodiacSign && (
-        //         <div>
-        //             <strong>Zodiac: {zodiacSign}</strong>
-        //         </div>
-        //     )}
-        // </div>
     );
 }

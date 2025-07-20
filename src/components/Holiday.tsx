@@ -6,7 +6,7 @@ type Holiday = {
   name: string;
 };
 
-export default function Holidays({ year, country }: { year: number; country: string }) {
+export const Holidays = ({ year, country }: { year: number; country: string }) => {
   const [data, setData] = useState<Holiday[] | null>(null);
 
   useEffect(() => {

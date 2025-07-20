@@ -55,11 +55,11 @@
 import { useState } from 'react';
 import './App.css';
 import DateInput from "./components/DateInput.tsx";
-import {Zodiac} from "./components/Zodiac.tsx";
-import { ChineseZodiac } from "./components/ChineseZodiac.tsx";
-import Holidays from "./components/Holiday.tsx";
 import CountrySelect from "./components/Country.tsx";
 import { DateDisplay } from './components/DateDisplay.tsx';
+import { ZodiacTab } from './components/tabs/ZodiacTab.tsx';
+import { HolidayTab } from './components/tabs/HolidayTab.tsx';
+import { NamedayTab } from './components/tabs/NamedayTab.tsx';
 
 type Tab = "Zodiacs" | "Holidays" | "Namedays";
 
@@ -123,22 +123,15 @@ function App() {
           {/* Dynamic Tab Content */}
           <div className="bg-gray-800 p-4 rounded-md shadow-sm">
             {activeTab === "Zodiacs" && (
-              <div className="space-y-2">
-                <div>
-                  <span className="font-bold">Zodiac:</span> <Zodiac date={date} />
-                </div>
-                <div>
-                  <span className="font-bold">Chinese Zodiac:</span> <ChineseZodiac date={date} />
-                </div>
-              </div>
+              <ZodiacTab date={date}/>
             )}
 
             {activeTab === "Holidays" && (
-              <Holidays year={year} country={country} />
+              <HolidayTab year={year} country={country} />
             )}
 
             {activeTab === "Namedays" && (
-              <div className="text-gray-300 italic">Nameday info coming soon...</div>
+              <NamedayTab date={date} country={country}/>
             )}
           </div>
         </div>
