@@ -1,10 +1,10 @@
-function formatMMDD(date: Date) {
+const formatMMDD = (date: Date) => {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return month + day;
 }
 
-function zodiac(date: Date) {
+const zodiac = (date: Date) => {
     const dateMMDD = formatMMDD(date)
     if (dateMMDD >= "0120" && dateMMDD <= "0218") return "Aquarius";
     if (dateMMDD >= "0219" && dateMMDD <= "0320") return "Pisces";
@@ -20,7 +20,7 @@ function zodiac(date: Date) {
     return "Capricorn"
 }
 
-export default function Zodiac({date}) {
+export const Zodiac = ({date}) => {
     const zodiacSign = zodiac(date)
 
     return (

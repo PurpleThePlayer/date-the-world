@@ -1,17 +1,13 @@
-import {determineChineseZodiac} from "../utils/chineseZodiac";
+import {determineChineseZodiac} from "../utils/chineseZodiac.tsx";
 
+type ChineseZodiacProps = {
+    date: Date;
+}
 
-export default function ChineseZodiac({ date }) {
+export const ChineseZodiac = ({ date }:ChineseZodiacProps) => {
   const zodiacSign = determineChineseZodiac(date)
 
   return (
         <>{zodiacSign}</>
-    // <div>
-    //   {zodiacSign && (
-    //     <div>
-    //       <strong>{zodiacSign}</strong>
-    //     </div>
-    //   )}
-    // </div>
   );
 }

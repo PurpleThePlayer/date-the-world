@@ -55,9 +55,9 @@
 import { useState } from 'react';
 import './App.css';
 import DateInput from "./components/DateInput.tsx";
-import Zodiac from "./components/Zodiac.tsx";
-import ChineseZodiac from "./components/ChineseZodiac.tsx";
-import Holidays from "./components/Holidays.tsx";
+import {Zodiac} from "./components/Zodiac.tsx";
+import { ChineseZodiac } from "./components/ChineseZodiac.tsx";
+import Holidays from "./components/Holiday.tsx";
 import CountrySelect from "./components/Country.tsx";
 import { DateDisplay } from './components/DateDisplay.tsx';
 

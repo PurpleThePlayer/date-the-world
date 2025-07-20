@@ -1,5 +1,10 @@
 import { useState } from "react";
 
+type chineseZodiacProps = {
+      date: Date;
+}
+
+
 const ZODIAC_ANIMALS = [
   "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake",
   "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"
@@ -99,7 +104,7 @@ function getChineseNewYearDate(year) {
   return julianDateToUTC(newMoonDates[1]);
 }
 
-export function determineChineseZodiac(date) {
+export const determineChineseZodiac = (date) => {
   const birthUTC = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
   const year = date.getFullYear();
 
